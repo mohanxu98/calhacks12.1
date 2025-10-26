@@ -6,9 +6,22 @@ import {
   TouchableOpacity,
   Alert,
   Dimensions,
+  Platform,
 } from 'react-native';
-import MapView, { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
+
+// Platform-specific imports
+const MapView = Platform.OS === 'web' 
+  ? require('./WebMapView').default 
+  : require('react-native-maps').default;
+
+const Marker = Platform.OS === 'web' 
+  ? require('./WebMapView').Marker 
+  : require('react-native-maps').Marker;
+
+const Polyline = Platform.OS === 'web' 
+  ? require('./WebMapView').Polyline 
+  : require('react-native-maps').Polyline;
 
 const { width, height } = Dimensions.get('window');
 
@@ -86,25 +99,47 @@ export default function RunningScreen({ navigation, route }) {
   };
 
   const startLocationTracking = async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert('Permission denied', 'Location permission is required');
-      return;
-    }
-
-    locationSubscription.current = await Location.watchPositionAsync(
-      {
-        accuracy: Location.Accuracy.High,
-        timeInterval: 1000,
-        distanceInterval: 1,
-      },
-      (location) => {
-        setCurrentLocation(location.coords);
-        if (isRunning) {
-          updateProgress(location.coords);
-        }
+    if (Platform.OS === 'web') {
+      // Web-specific location handling
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            setCurrentLocation({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              accuracy: position.coords.accuracy
+            });
+          },
+          (error) => {
+            console.log('Location access denied:', error);
+            Alert.alert('Location Access', 'Please enable location access for the best experience');
+          }
+        );
+      } else {
+        Alert.alert('Location Not Supported', 'Location services are not available in this browser');
       }
-    );
+    } else {
+      // Mobile location handling
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission denied', 'Location permission is required');
+        return;
+      }
+
+      locationSubscription.current = await Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.High,
+          timeInterval: 1000,
+          distanceInterval: 1,
+        },
+        (location) => {
+          setCurrentLocation(location.coords);
+          if (isRunning) {
+            updateProgress(location.coords);
+          }
+        }
+      );
+    }
   };
 
   const updateProgress = (coords) => {

@@ -6,8 +6,17 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Platform,
 } from 'react-native';
-import MapView, { Polyline } from 'react-native-maps';
+
+// Platform-specific imports
+const MapView = Platform.OS === 'web' 
+  ? require('./WebMapView').default 
+  : require('react-native-maps').default;
+
+const Polyline = Platform.OS === 'web' 
+  ? require('./WebMapView').Polyline 
+  : require('react-native-maps').Polyline;
 
 const { width, height } = Dimensions.get('window');
 

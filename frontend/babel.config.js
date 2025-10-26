@@ -3,7 +3,11 @@ module.exports = function(api) {
   return {
     presets: ['babel-preset-expo'],
     plugins: [
-      'react-native-reanimated/plugin',
+      // Only include reanimated plugin if the package is installed
+      ...(require('fs').existsSync(require.resolve('react-native-reanimated/plugin')) 
+        ? ['react-native-reanimated/plugin'] 
+        : []
+      ),
     ],
   };
 };
