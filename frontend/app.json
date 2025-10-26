@@ -1,0 +1,48 @@
+{
+  "expo": {
+    "name": "ShapeRun",
+    "slug": "shaperun",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#4A90E2"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.shaperun.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "ShapeRun needs location access to track your running routes and generate GPS-based shapes.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "ShapeRun needs location access to track your running routes and generate GPS-based shapes."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#4A90E2"
+      },
+      "package": "com.shaperun.app",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "ShapeRun needs location access to track your running routes and generate GPS-based shapes."
+        }
+      ]
+    ]
+  }
+}

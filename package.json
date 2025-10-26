@@ -1,0 +1,20 @@
+{
+  "name": "shaperun",
+  "version": "1.0.0",
+  "description": "ShapeRun - Interactive running app that generates GPS routes shaped like hidden patterns",
+  "scripts": {
+    "install-frontend": "cd frontend && npm install",
+    "install-backend": "cd backend && npm install",
+    "install-all": "npm run install-frontend && npm run install-backend",
+    "start-frontend": "cd frontend && npm start",
+    "start-backend": "cd backend && npm start",
+    "dev": "concurrently \"npm run start-backend\" \"npm run start-frontend\"",
+    "build": "cd frontend && npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "keywords": ["running", "fitness", "gps", "maps", "shapes", "gamification"],
+  "author": "ShapeRun Team",
+  "license": "MIT"
+}
